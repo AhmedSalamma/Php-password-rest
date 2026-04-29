@@ -1,26 +1,26 @@
-# restPassword (Reset Password)
+# restPassword (Reset Password) 🔐
 
-مشروع PHP بسيط لعمل **إعادة تعيين كلمة المرور** عبر إرسال رابط على البريد الإلكتروني، ثم تحديث كلمة المرور باستخدام `token`.
+A simple PHP project to implement a **password reset system** by sending a reset link via email 📧, then updating the password using a `token`.
 
-## المتطلبات
+## Requirements ⚙️
 
-- **XAMPP** (Apache + MySQL)
-- **PHP** (يفضّل 8+)
-- Composer (لازم لو هتثبت الاعتماديات من جديد)
+* **XAMPP** (Apache + MySQL)
+* **PHP** (preferably 8+)
+* Composer (required if you want to reinstall dependencies)
 
-## ملفات المشروع
+## Project Files 📂
 
-- `rest.php`: صفحة إدخال البريد وإرسال رابط إعادة التعيين (PHPMailer عبر SMTP).
-- `changePassword.php`: صفحة تغيير كلمة المرور بعد فتح الرابط (تتحقق من `token` + `email` ثم تحدث كلمة المرور).
-- `setup.php`: إعداد الاتصال بقاعدة البيانات (PDO).
+* `rest.php`: Page to enter email and send the reset link (uses PHPMailer via SMTP).
+* `changePassword.php`: Page to update the password after opening the link (validates `token` + `email` then updates the password).
+* `setup.php`: Database connection setup (PDO).
 
-## إعداد قاعدة البيانات
+## Database Setup 🗄️
 
-1) افتح phpMyAdmin وأنشئ قاعدة بيانات باسم:
+1. Open phpMyAdmin and create a database named:
 
-- `password_reset_db`
+* `password_reset_db`
 
-2) أنشئ جدول `users` (مثال متوافق مع الكود الحالي):
+2. Create a `users` table (example compatible with the current code):
 
 ```sql
 CREATE TABLE users (
@@ -31,46 +31,46 @@ CREATE TABLE users (
 );
 ```
 
-3) عدّل بيانات الاتصال في `setup.php` لو احتجت:
+3. Update database connection details in `setup.php` if needed:
 
-- `$db_host` / `$db_user` / `$db_pass` / `$db_name`
+* `$db_host` / `$db_user` / `$db_pass` / `$db_name`
 
-## إعداد البريد (SMTP)
+## Email Configuration (SMTP) 📬
 
-الكود في `rest.php` يستخدم **Mailtrap** (Sandbox) كـ SMTP. عدّل القيم التالية بما يناسبك:
+The code in `rest.php` uses **Mailtrap** (Sandbox) as SMTP. Update the following values as needed:
 
-- `$mail->Host`
-- `$mail->Username`
-- `$mail->Password`
-- `$mail->Port`
-- `$mail->setFrom(...)`
+* `$mail->Host`
+* `$mail->Username`
+* `$mail->Password`
+* `$mail->Port`
+* `$mail->setFrom(...)`
 
-> ملاحظة: بيانات SMTP موجودة حاليًا داخل `rest.php` (كما هي في المشروع).
+> Note: SMTP credentials are currently included inside `rest.php` (as in the project).
 
-## التشغيل على XAMPP
+## Running on XAMPP 🚀
 
-1) شغّل **Apache** و **MySQL** من لوحة تحكم XAMPP.
-2) تأكد أن المشروع موجود هنا:
+1. Start **Apache** and **MySQL** from the XAMPP control panel.
+2. Make sure the project is located at:
 
-- `c:\xampp\htdocs\restPassword`
+* `c:\xampp\htdocs\restPassword`
 
-3) افتح الصفحة:
+3. Open the page:
 
-- `http://localhost/restPassword/rest.php`
+* `http://localhost/restPassword/rest.php`
 
-## طريقة الاستخدام (تجربة كاملة)
+## Usage (Full Flow) 🔄
 
-1) أضف مستخدم في جدول `users` (بنفس البريد اللي هتجرب بيه) من phpMyAdmin.
-2) افتح `rest.php` واكتب البريد واضغط إرسال.
-3) خُد رابط إعادة التعيين من Mailtrap (حسب إعدادات SMTP الموجودة في `rest.php`).
-4) افتح الرابط بالشكل:
+1. Add a user to the `users` table (with the same email you’ll test with) via phpMyAdmin.
+2. Open `rest.php`, enter the email, and click send.
+3. Get the reset link from Mailtrap (based on SMTP settings in `rest.php`).
+4. Open the link in this format:
 
-- `http://localhost/restPassword/changePassword.php?token=...&email=...`
+* `http://localhost/restPassword/changePassword.php?token=...&email=...`
 
-5) اكتب كلمة المرور الجديدة وتأكيدها (8 أحرف على الأقل).
+5. Enter the new password and confirm it (minimum 8 characters).
 
-## ملاحظات مهمة
+## Important Notes ⚠️
 
-- **الـ token يُستخدم مرة واحدة**: بعد تغيير كلمة المرور يتم تعيين `reset_token = NULL`.
-- لو `token` أو `email` ناقص/غير صحيح → سيظهر خطأ.
-- زر "العودة" في الصفحات حاليًا رابط فاضي (`href=""`)؛ عدّله حسب صفحة تسجيل الدخول عندك.
+* **The token is single-use**: after resetting the password, `reset_token` is set to `NULL`.
+* If `token` or `email` is missing/invalid → an error will be displayed.
+* The "Back" button in the pages currently has an empty link (`href=""`); update it based on your login page.
